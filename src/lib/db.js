@@ -1,0 +1,242 @@
+import fs from "fs";
+import path from "path";
+
+const DATA_DIR = path.join(process.cwd(), "data");
+const DB_FILE = path.join(DATA_DIR, "database.json");
+
+// Default seeded mock data
+const DEFAULT_SEEDS = {
+  services: [
+    {
+      id: "srv-1",
+      slug: "offshore-staffing",
+      title: "Offshore Staffing Solutions",
+      icon: "users",
+      shortDescription: "Build elite, dedicated remote teams in India managed by our expert operations.",
+      longDescription: "Tap into India's vast pool of high-quality professionals. We handle end-to-end recruitment, office space, payroll, and local compliance, allowing you to scale your engineering, customer success, or finance departments seamlessly.",
+      benefits: [
+        "60%+ reduction in operational labor costs",
+        "Rigorous 4-stage technical vetting process",
+        "Dedicated modern workstations & top-tier infrastructure",
+        "Seamless timezone overlap and cultural alignment"
+      ],
+      process: [
+        { step: "1", title: "Requirement Profiling", desc: "We map out your desired skillsets, seniority, and cultural fit." },
+        { step: "2", title: "Elite Sourcing & Vetting", desc: "We run custom technical and behavioral screens from our database." },
+        { step: "3", title: "Client Interviews & Selection", desc: "You interview the shortlisted top 2% and make the final decision." },
+        { step: "4", title: "Onboarding & Operations", desc: "We manage HR, payroll, workspace, and ongoing operational support." }
+      ]
+    },
+    {
+      id: "srv-2",
+      slug: "bpo-operations",
+      title: "BPO & Customer Operations",
+      icon: "headphones",
+      shortDescription: "Scale your back-office and customer support with high-performance 24/7 squads.",
+      longDescription: "Deliver exceptional customer experiences and optimize back-office efficiency. Our operations team structures custom BPO workflows, including multilingual omnichannel support, content moderation, data entry, and financial operations.",
+      benefits: [
+        "24/7/365 coverage across all channels (voice, email, chat, social)",
+        "Strict SLA adherence and rigorous quality assurance monitoring",
+        "Rapid ramp-up times with modular operational training playbooks",
+        "Sleek agent dashboards for real-time performance tracking"
+      ],
+      process: [
+        { step: "1", title: "Process Mapping", desc: "We document and analyze your current customer or back-office workflows." },
+        { step: "2", title: "Playbook Development", desc: "We translate processes into comprehensive training manuals and KPIs." },
+        { step: "3", title: "Team Training", desc: "We train agents under strict SLA and QA standards before launching." },
+        { step: "4", title: "Go-Live & QA Audits", desc: "Continuous monitoring, feedback loops, and daily performance metrics." }
+      ]
+    },
+    {
+      id: "srv-3",
+      slug: "digital-transformation",
+      title: "Digital & Custom Tech Solutions",
+      icon: "code",
+      shortDescription: "Empower your workflows with bespoke web apps, automation pipelines, and cloud systems.",
+      longDescription: "Accelerate your business operations through custom software development. We build highly responsive web systems, mobile applications, legacy migration paths, and automated system-to-system integration pipelines.",
+      benefits: [
+        "Bespoke, pixel-perfect user interfaces built using modern frameworks",
+        "Automated repetitive workflows, eliminating manual input errors",
+        "Highly secure and scalable cloud infrastructure configurations",
+        "Comprehensive API integrations with popular CRMs and platforms"
+      ],
+      process: [
+        { step: "1", title: "System Architecture", desc: "We map your current tech stack and architect the modern solution." },
+        { step: "2", title: "Sprint-Based Coding", desc: "Transparent, agile development with weekly review demos." },
+        { step: "3", title: "Rigorous QA & Testing", desc: "Automated unit, integration, and security penetration testing." },
+        { step: "4", title: "Deployment & Handover", desc: "Safe deployment on AWS/Vercel with comprehensive documentation." }
+      ]
+    },
+    {
+      id: "srv-4",
+      slug: "it-consulting",
+      title: "IT Strategy & Advisory",
+      icon: "trending-up",
+      shortDescription: "Align your technology roadmap with core business growth and cybersecurity standards.",
+      longDescription: "Navigate complex technological landscapes with confidence. Our senior advisors conduct security audits, map IT maturity models, advise on cloud optimization, and architect enterprise security protocols to safeguard your assets.",
+      benefits: [
+        "Objective, vendor-neutral recommendations based on industry standards",
+        "Comprehensive cybersecurity risk assessments and remediation paths",
+        "Cloud cost optimization audits to prevent budget leakage",
+        "Future-proof technology roadmap aligned with your business model"
+      ],
+      process: [
+        { step: "1", title: "Maturity Audit", desc: "We review your current software, hardware, security, and policies." },
+        { step: "2", title: "Risk Identification", desc: "Highlighting security vulnerabilities, inefficiencies, and cost leaks." },
+        { step: "3", title: "Strategic Roadmap", desc: "Drafting a prioritized, budget-friendly technology roadmap." },
+        { step: "4", title: "Governance & Review", desc: "Ongoing advisory sessions to track implementation and compliance." }
+      ]
+    }
+  ],
+  portfolio: [
+    {
+      id: "port-1",
+      slug: "fintech-scaleup-operations",
+      title: "Accelerating FinTech Development",
+      category: "Offshore Staffing",
+      client: "PaySphere LLC (USA)",
+      shortDescription: "Deployed a dedicated squad of 12 senior engineers, cutting core product release cycles by 40%.",
+      description: "PaySphere needed to rapidly scale its engineering division to roll out international wire transfers. Facing a tight US engineering market, they partnered with Outpro.India to build a dedicated offshore development hub.",
+      challenge: "High cost of local senior talent and long hiring cycles (average 90 days) threatened to delay their multi-currency transfer module launch.",
+      solution: "Outpro.India sourced, vetted, and onboarded a team of 12 specialists (8 React/Node devs, 2 QA engineers, and 2 Devops engineers) in less than 40 days, complete with state-of-the-art workspace and seamless agile integration.",
+      kpiMetric: "Engineering Cost Savings",
+      kpiValue: "62%",
+      image: "fintech_mockup"
+    },
+    {
+      id: "port-2",
+      slug: "logistics-support-automation",
+      title: "Omnichannel BPO & CRM Redesign",
+      category: "BPO Operations",
+      client: "CargoMove Global (Germany)",
+      shortDescription: "Scaled a 24/7 customer operations desk to handle 12,000+ weekly shipments with a 98.5% CSAT.",
+      description: "CargoMove experienced a surge in global e-commerce shipping volume, causing massive backlogs in client support tickets and shipping exceptions management.",
+      challenge: "Support response times ballooned to 14 hours, resulting in client churn and severe SLA penalties from enterprise retail clients.",
+      solution: "We deployed a dedicated 24-agent customer operations squad operating in 24/7 shifts. We integrated a centralized ticketing dashboard that automated route exception tracking and enabled rapid agent resolution.",
+      kpiMetric: "Average Resolution Time",
+      kpiValue: "-82%",
+      image: "logistics_mockup"
+    },
+    {
+      id: "port-3",
+      slug: "cloud-transformation-ecommerce",
+      title: "E-Commerce Cloud Migration & Speed Optimization",
+      category: "Digital Transformation",
+      client: "VogueVibe Retail (Australia)",
+      shortDescription: "Migrated a legacy monolith to a Next.js headless frontend, elevating page speed to 98/100.",
+      description: "VogueVibe's legacy e-commerce platform suffered from slow loading speeds, especially during seasonal sales events, leading to massive cart abandonment rates.",
+      challenge: "The average mobile load time was 5.4 seconds. During peak sales, database deadlocks caused frequent check-out failures.",
+      solution: "Our tech team re-architected their digital presence into a headless framework. We built a Next.js front-end deployed on Vercel and connected it to a microservices-based serverless back-end on AWS.",
+      kpiMetric: "Mobile Speed Score",
+      kpiValue: "98/100",
+      image: "ecommerce_mockup"
+    }
+  ],
+  team: [
+    {
+      name: "Rohan Sen",
+      role: "Founder & Chief Executive",
+      bio: "15+ years managing global BPO & staffing operations. Former VP of Operations at a Fortune 500 outsourcing firm.",
+      image: "member_rohan"
+    },
+    {
+      name: "Dr. Ananya Reddy",
+      role: "Head of Talent Acquisition",
+      bio: "Ph.D. in Organizational Psychology with 12+ years designing high-impact recruitment matrices for multinational companies.",
+      image: "member_ananya"
+    },
+    {
+      name: "Vikram Malhotra",
+      role: "Chief Technology Officer",
+      bio: "Architected scalable cloud platforms for prominent tech startups. Oversees our digital transformation and custom tech divisions.",
+      image: "member_vikram"
+    },
+    {
+      name: "Elena Rostova",
+      role: "VP of Client Relations",
+      bio: "Based in Frankfurt. Dedicated to managing onboarding processes, client SLAs, and strategic communication with international partners.",
+      image: "member_elena"
+    }
+  ],
+  leads: []
+};
+
+// Initialize Database
+export function initDb() {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+
+  if (!fs.existsSync(DB_FILE)) {
+    fs.writeFileSync(DB_FILE, JSON.stringify(DEFAULT_SEEDS, null, 2), "utf8");
+    return true;
+  }
+  return false;
+}
+
+// Read database
+function readDb() {
+  initDb();
+  try {
+    const data = fs.readFileSync(DB_FILE, "utf8");
+    return JSON.parse(data);
+  } catch (error) {
+    console.error("Error reading database:", error);
+    return DEFAULT_SEEDS;
+  }
+}
+
+// Write database
+function writeDb(data) {
+  initDb();
+  try {
+    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), "utf8");
+    return true;
+  } catch (error) {
+    console.error("Error writing database:", error);
+    return false;
+  }
+}
+
+// Exported database methods
+export const db = {
+  // Services
+  getServices: () => {
+    return readDb().services;
+  },
+  getServiceBySlug: (slug) => {
+    return readDb().services.find(s => s.slug === slug);
+  },
+
+  // Portfolio
+  getPortfolio: () => {
+    return readDb().portfolio;
+  },
+  getPortfolioBySlug: (slug) => {
+    return readDb().portfolio.find(p => p.slug === slug);
+  },
+
+  // Team
+  getTeam: () => {
+    return readDb().team;
+  },
+
+  // Leads
+  getLeads: () => {
+    return readDb().leads || [];
+  },
+  saveLead: (leadData) => {
+    const data = readDb();
+    const newLead = {
+      id: "lead-" + Date.now(),
+      created_at: new Date().toISOString(),
+      ...leadData
+    };
+    if (!data.leads) {
+      data.leads = [];
+    }
+    data.leads.unshift(newLead); // Add to beginning
+    writeDb(data);
+    return newLead;
+  }
+};

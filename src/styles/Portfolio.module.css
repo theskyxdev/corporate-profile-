@@ -1,0 +1,170 @@
+/* Portfolio Page Custom Layout Styles */
+
+.headerSection {
+  padding: 180px 0 60px 0;
+  text-align: center;
+  position: relative;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 550px;
+  margin: 0 auto;
+  line-height: 1.65;
+}
+
+/* Detailed Stacked Case Studies */
+.projectsStack {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.projectCard {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.projectHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--border-glass);
+  padding-bottom: 1.25rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.metaInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.clientName {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.projectTitle {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.categoryBadge {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Three-Column Challenge, Solution, Result Grid */
+.detailGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.8fr;
+  gap: 3rem;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.colTitle {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.colText {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+/* Structured KPI Box with Gold Accent Border */
+.kpiBox {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-glass);
+  border-left: 3px solid var(--color-secondary);
+  border-radius: var(--radius-sm);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.kpiValue {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.kpiLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.35rem;
+}
+
+/* Responsiveness */
+@media (max-width: 1199px) {
+  .detailGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  
+  .col:last-child {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .projectCard {
+    padding: 1.75rem;
+  }
+  .projectTitle {
+    font-size: 1.35rem;
+  }
+  .detailGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .col:last-child {
+    grid-column: span 1;
+  }
+}
